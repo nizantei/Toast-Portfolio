@@ -19,7 +19,7 @@
     }
 
     html{scroll-behavior:smooth;}
-    body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; background:var(--bg); color:var(--text); line-height:1.55;}
+    body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans JP", "Noto Sans Hebrew"; background:var(--bg); color:var(--text); line-height:1.55;}
     a{color:var(--text);} a:hover{opacity:.9}
     .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px;}
 
@@ -28,10 +28,15 @@
     .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0;} 
     .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);} 
     .brand-title{margin:0; font-weight:900; letter-spacing:.3px; font-size:clamp(16px,2.2vw,20px);} 
-    .nav-cta{display:flex; gap:10px; align-items:center;} 
+    .nav-cta{display:flex; gap:10px; align-items:center;}
     .btn{padding:10px 14px; border-radius:999px; border:1px solid rgba(230,214,183,.25); text-decoration:none; transition: transform .15s ease, box-shadow .2s ease;} 
     .btn--accent{background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 6px 18px rgba(240,82,35,.35);} 
     .btn:hover{transform:translateY(-1px);} 
+
+    /* Language switcher */
+    .lang-switch{display:flex; align-items:center; gap:6px; padding:4px; border-radius:999px; background: rgba(230,214,183,.08); border:1px solid rgba(230,214,183,.18);} 
+    .lang-switch button{background:transparent; border:none; color:var(--text); padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:700; letter-spacing:.2px;} 
+    .lang-switch button.active{background:var(--accent); color:#fff; box-shadow:0 6px 18px rgba(240,82,35,.35);} 
 
     /* Hero */
     .hero{padding:72px 0 28px;} 
@@ -70,6 +75,12 @@
       .duo{height:320px;} .tile.a{inset:0 0 42% 0;} .tile.b{inset:60% 0 0 10%;}
     }
 
+    /* RTL adjustments */
+    html[dir="rtl"] .nav{flex-direction: row-reverse;}
+    html[dir="rtl"] .nav-cta{flex-direction: row-reverse;}
+    html[dir="rtl"] .project{grid-template-columns: 1fr 1.05fr;}
+    html[dir="rtl"] .project.is-alt{grid-template-columns: 1.05fr 1fr;}
+
     /* Lightbox */
     .lightbox{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.8); z-index:100;} 
     .lightbox.is-open{display:flex;} 
@@ -77,11 +88,8 @@
     .lightbox .close{position:absolute; top:18px; right:18px; background:var(--accent); color:#fff; border:none; border-radius:999px; padding:10px 12px; font-weight:700; cursor:pointer;} 
 
     /* Reveal on scroll */
-    .reveal{opacity:0; transform: translateY(16px);}
-    .reveal.is-in{opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease;}
-    @media (prefers-reduced-motion: reduce){
-      .btn, .tile, .reveal{transition:none !important}
-    }
+    .reveal{opacity:0; transform: translateY(16px);} .reveal.is-in{opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease;}
+    @media (prefers-reduced-motion: reduce){ .btn, .tile, .reveal{transition:none !important} }
 
     /* Footer */
     footer{padding:40px 0 80px; color:var(--muted); text-align:center;} 
@@ -93,20 +101,25 @@
   <header class="site-header">
     <div class="wrap">
       <nav class="nav" aria-label="Primary">
-        <a href="#top" class="brand"><h1 class="brand-title">Toast Games</h1></a>
+        <a href="#top" class="brand"><h1 class="brand-title" data-i18n="brand">Toast Games</h1></a>
         <div class="nav-cta">
-          <a class="btn" href="#projects" aria-label="Jump to work">Work</a>
-          <a class="btn btn--accent" href="mailto:nizantei@gmail.com" aria-label="Email Toast Games">Contact</a>
+          <div class="lang-switch" aria-label="Language switcher">
+            <button data-lang="en" class="active">EN</button>
+            <button data-lang="ja">日本語</button>
+            <button data-lang="he">עברית</button>
+          </div>
+          <a class="btn" href="#projects" aria-label="Jump to work" data-i18n="nav.work">Work</a>
+          <a class="btn btn--accent" href="mailto:nizantei@gmail.com" aria-label="Email Toast Games" data-i18n="nav.contact">Contact</a>
         </div>
       </nav>
     </div>
   </header>
 
-  <main id="top" class="wrap">
+  <main id="top" class="wrap" data-i18n-scope>
     <section class="hero">
-      <span class="kicker">Games • Interactive • Exhibitions</span>
-      <h2 class="title">We are <span class="accent">Toast Games</span></h2>
-      <p class="lead">We design and build playful interactive products—games, apps, and museum installations. Small‑team focus, production‑level delivery.</p>
+      <span class="kicker" data-i18n="hero.kicker">Games • Interactive • Exhibitions</span>
+      <h2 class="title" data-i18n-html="hero.title">We are <span class="accent">Toast Games</span></h2>
+      <p class="lead" data-i18n="hero.lead">We design and build playful interactive products—games, apps, and museum installations. Small‑team focus, production‑level delivery.</p>
     </section>
 
     <section id="projects" class="projects" aria-label="Projects">
@@ -114,9 +127,9 @@
       <!-- 1: NickWatch -->
       <article class="project reveal" id="nickwatch">
         <div class="info">
-          <h2>NickWatch — Smartwatch for Kids <span class="pill">Red Dot Award</span></h2>
-          <p class="sub">Wearable UX · Feature design · Children’s product</p>
-          <p>We designed and developed new interactive watch features for Nickelodeon’s kid‑focused wearable—bringing playful UX to everyday utility and earning recognition for product design.</p>
+          <h2 data-i18n="projects.nickwatch.title">NickWatch — Smartwatch for Kids <span class="pill" data-i18n="projects.nickwatch.award">Red Dot Award</span></h2>
+          <p class="sub" data-i18n="projects.nickwatch.sub">Wearable UX · Feature design · Children’s product</p>
+          <p data-i18n="projects.nickwatch.body">We designed and developed new interactive watch features for Nickelodeon’s kid‑focused wearable—bringing playful UX to everyday utility and earning recognition for product design.</p>
         </div>
         <div class="duo" aria-label="NickWatch gallery">
           <figure class="tile a"><img loading="lazy" src="nickwatch-1.jpg" alt="NickWatch feature screen" /></figure>
@@ -127,9 +140,9 @@
       <!-- 2: NickAcademy (alt layout) -->
       <article class="project is-alt reveal" id="nickacademy">
         <div class="info">
-          <h2>NickAcademy — Learning Through Play</h2>
-          <p class="sub">App build · Games · Avatar builder</p>
-          <p>We took the platform from concept to launch, delivering core interactive features—educational games and a customizable avatar builder—for a global kids’ audience.</p>
+          <h2 data-i18n="projects.nickacademy.title">NickAcademy — Learning Through Play</h2>
+          <p class="sub" data-i18n="projects.nickacademy.sub">App build · Games · Avatar builder</p>
+          <p data-i18n="projects.nickacademy.body">We took the platform from concept to launch, delivering core interactive features—educational games and a customizable avatar builder—for a global kids’ audience.</p>
         </div>
         <div class="duo" aria-label="NickAcademy gallery">
           <figure class="tile a"><img loading="lazy" src="nickacademy-1.jpg" alt="NickAcademy game screen" /></figure>
@@ -140,9 +153,9 @@
       <!-- 3: Israel Space Agency -->
       <article class="project reveal" id="isa">
         <div class="info">
-          <h2>Israel Space Agency — Educational Games</h2>
-          <p class="sub">Exhibition games · STEM learning</p>
-          <p>We developed two custom games for a public exhibition, translating space science into approachable, hands‑on play that sparks curiosity.</p>
+          <h2 data-i18n="projects.isa.title">Israel Space Agency — Educational Games</h2>
+          <p class="sub" data-i18n="projects.isa.sub">Exhibition games · STEM learning</p>
+          <p data-i18n="projects.isa.body">We developed two custom games for a public exhibition, translating space science into approachable, hands‑on play that sparks curiosity.</p>
         </div>
         <div class="duo" aria-label="Israel Space Agency gallery">
           <figure class="tile a"><img loading="lazy" src="space-1.jpg" alt="Space game mission screen" /></figure>
@@ -153,9 +166,9 @@
       <!-- 4: Jerusalem Museum -->
       <article class="project is-alt reveal" id="jerusalem-museum">
         <div class="info">
-          <h2>Tower of David — Interactive Architecture</h2>
-          <p class="sub">Immersive installation · Story‑driven UI</p>
-          <p>We created an immersive digital installation at the Tower of David, turning architectural history into a tactile, story‑driven experience for visitors.</p>
+          <h2 data-i18n="projects.tod.title">Tower of David — Interactive Architecture</h2>
+          <p class="sub" data-i18n="projects.tod.sub">Immersive installation · Story‑driven UI</p>
+          <p data-i18n="projects.tod.body">We created an immersive digital installation at the Tower of David, turning architectural history into a tactile, story‑driven experience for visitors.</p>
         </div>
         <div class="duo" aria-label="Jerusalem Museum gallery">
           <figure class="tile a"><img loading="lazy" src="tod-1.jpg" alt="Interactive architecture interface" /></figure>
@@ -166,9 +179,9 @@
       <!-- 5: National Library of Israel -->
       <article class="project reveal" id="nli">
         <div class="info">
-          <h2>National Library of Israel — Interactive Exhibition</h2>
-          <p class="sub">Cultural tech · Multi‑touch displays</p>
-          <p>We led the development of interactive installations for the Library’s new campus, blending modern storytelling with touch‑friendly technology to connect audiences with cultural heritage.</p>
+          <h2 data-i18n="projects.nli.title">National Library of Israel — Interactive Exhibition</h2>
+          <p class="sub" data-i18n="projects.nli.sub">Cultural tech · Multi‑touch displays</p>
+          <p data-i18n="projects.nli.body">We led the development of interactive installations for the Library’s new campus, blending modern storytelling with touch‑friendly technology to connect audiences with cultural heritage.</p>
         </div>
         <div class="duo" aria-label="National Library gallery">
           <figure class="tile a"><img loading="lazy" src="nli-1.jpg" alt="Interactive library timeline" /></figure>
@@ -187,7 +200,7 @@
 
   <footer class="wrap">
     <footer>
-      © <span id="year"></span> Toast Games <span class="dot"></span> Playful Interactive Studio
+      © <span id="year"></span> <span data-i18n="brand">Toast Games</span> <span class="dot"></span> <span data-i18n="footer.tag">Playful Interactive Studio</span>
     </footer>
   </footer>
 
@@ -195,34 +208,93 @@
     // Update year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Tiny lightbox (no dependencies)
+    // Lightbox
     const Lightbox = {
-      el: document.getElementById('lightbox'),
-      img: null,
-      open(src, alt){
-        if(!this.img) this.img = this.el.querySelector('img');
-        this.img.src = src; this.img.alt = alt || '';
-        this.el.classList.add('is-open');
-      },
-      close(){ this.el.classList.remove('is-open'); if(this.img) this.img.src = ''; }
+      el: document.getElementById('lightbox'), img: null,
+      open(src, alt){ if(!this.img) this.img = this.el.querySelector('img'); this.img.src = src; this.img.alt = alt||''; this.el.classList.add('is-open'); },
+      close(){ this.el.classList.remove('is-open'); if(this.img) this.img.src=''; }
     };
-    window.Lightbox = Lightbox;
-
-    // Delegate clicks for any collage image
-    document.addEventListener('click', (e)=>{
-      const img = e.target.closest('.tile img');
-      if(img){ Lightbox.open(img.src, img.alt); }
-      if(e.target.id === 'lightbox'){ Lightbox.close(); }
-    });
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') Lightbox.close(); });
+    document.addEventListener('click', (e)=>{ const img = e.target.closest('.tile img'); if(img){ Lightbox.open(img.src, img.alt); } if(e.target.id==='lightbox'){ Lightbox.close(); } });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') Lightbox.close(); });
 
     // Reveal on scroll
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach((entry)=>{
-        if(entry.isIntersecting){ entry.target.classList.add('is-in'); io.unobserve(entry.target); }
-      })
-    }, {threshold: 0.12});
+    const io = new IntersectionObserver((entries)=>{ entries.forEach((entry)=>{ if(entry.isIntersecting){ entry.target.classList.add('is-in'); io.unobserve(entry.target); } }) }, {threshold: 0.12});
     document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+    // --- i18n ---
+    const dict = {
+      en: {
+        brand: 'Toast Games',
+        nav: { work: 'Work', contact: 'Contact' },
+        hero: { kicker: 'Games • Interactive • Exhibitions', title: 'We are <span class="accent">Toast Games</span>', lead: 'We design and build playful interactive products—games, apps, and museum installations. Small‑team focus, production‑level delivery.' },
+        projects: {
+          nickwatch: { title: 'NickWatch — Smartwatch for Kids <span class="pill">Red Dot Award</span>', award: 'Red Dot Award', sub: 'Wearable UX · Feature design · Children’s product', body: 'We designed and developed new interactive watch features for Nickelodeon’s kid‑focused wearable—bringing playful UX to everyday utility and earning recognition for product design.' },
+          nickacademy: { title: 'NickAcademy — Learning Through Play', sub: 'App build · Games · Avatar builder', body: 'We took the platform from concept to launch, delivering core interactive features—educational games and a customizable avatar builder—for a global kids’ audience.' },
+          isa: { title: 'Israel Space Agency — Educational Games', sub: 'Exhibition games · STEM learning', body: 'We developed two custom games for a public exhibition, translating space science into approachable, hands‑on play that sparks curiosity.' },
+          tod: { title: 'Tower of David — Interactive Architecture', sub: 'Immersive installation · Story‑driven UI', body: 'We created an immersive digital installation at the Tower of David, turning architectural history into a tactile, story‑driven experience for visitors.' },
+          nli: { title: 'National Library of Israel — Interactive Exhibition', sub: 'Cultural tech · Multi‑touch displays', body: 'We led the development of interactive installations for the Library’s new campus, blending modern storytelling with touch‑friendly technology to connect audiences with cultural heritage.' }
+        },
+        footer: { tag: 'Playful Interactive Studio' }
+      },
+      ja: {
+        brand: 'Toast Games',
+        nav: { work: '制作実績', contact: 'お問い合わせ' },
+        hero: { kicker: 'ゲーム・インタラクティブ・展示', title: '私たちは <span class="accent">Toast Games</span> です', lead: '小さなチームで、遊び心のあるインタラクティブプロダクト—ゲーム、アプリ、ミュージアム展示—を企画・開発します。コンパクトでも本番品質。' },
+        projects: {
+          nickwatch: { title: 'NickWatch — 子ども向けスマートウォッチ <span class="pill">レッド・ドット賞</span>', award: 'レッド・ドット賞', sub: 'ウェアラブルUX・機能設計・キッズプロダクト', body: '子ども向けウェアラブル「NickWatch」に新しいインタラクティブ機能を設計・実装。日常で使いやすい遊び心ある体験が評価され、プロダクトデザインとして受賞しました。' },
+          nickacademy: { title: 'NickAcademy — 遊びながら学ぶ', sub: 'アプリ開発・ゲーム・アバタービルダー', body: 'コンセプト段階からローンチまでを担当。教育ゲームやカスタマイズ可能なアバタービルダーなど核となる機能を実装し、世界中の子どもたちに届けました。' },
+          isa: { title: 'イスラエル宇宙庁 — 教育ゲーム', sub: '展示ゲーム・STEM学習', body: '一般向け展示のためにカスタムゲームを2本開発。宇宙科学を、直感的で手を動かして学べる体験へと翻訳しました。' },
+          tod: { title: 'ダビデの塔 — インタラクティブ建築展示', sub: '没入型インスタレーション・物語性のあるUI', body: '歴史的建築を、触れて楽しめるデジタル体験として再構築。来館者が物語として歴史に没入できる展示を制作しました。' },
+          nli: { title: 'イスラエル国立図書館 — インタラクティブ展示', sub: 'カルチャー×テクノロジー・マルチタッチ', body: '新キャンパス向けに、文化遺産と来館者をつなぐインタラクティブ展示を開発。モダンなストーリーテリングとタッチ操作を融合しました。' }
+        },
+        footer: { tag: '遊び心あるインタラクティブスタジオ' }
+      },
+      he: {
+        brand: 'Toast Games',
+        nav: { work: 'עבודות', contact: 'צור קשר' },
+        hero: { kicker: 'משחקים • אינטראקטיב • תערוכות', title: 'אנחנו <span class="accent">Toast Games</span>', lead: 'אנחנו מעצבים ומפתחים מוצרים אינטראקטיביים עם משחקיות—משחקים, אפליקציות ותצוגות במוזיאונים. צוות קטן, תוצאה ברמת פרודקשן.' },
+        projects: {
+          nickwatch: { title: 'NickWatch — שעון חכם לילדים <span class="pill">פרס Red Dot</span>', award: 'פרס Red Dot', sub: 'חוויית משתמש ללביש · עיצוב פיצ׳רים · מוצר לילדים', body: 'עיצבנו ופיתחנו פיצ׳רים אינטראקטיביים לשעון החכם של ניקולודיאון—שילוב של שימושיות עם משחקיות שזכה להכרה עיצובית.' },
+          nickacademy: { title: 'NickAcademy — לומדים דרך משחק', sub: 'פיתוח אפליקציה · משחקים · בניית אוואטרים', body: 'ליווינו משלב הקונספט ועד ההשקה: מימוש פיצ׳רים מרכזיים—משחקים לימודיים ובונה אוואטרים—לקהל ילדים עולמי.' },
+          isa: { title: 'סוכנות החלל הישראלית — משחקים חינוכיים', sub: 'משחקי תערוכה · STEM', body: 'פיתחנו שני משחקים מותאמים לתערוכה ציבורית, שהופכים מושגים מהחלל לחוויה ידידותית ומעשית שמעוררת סקרנות.' },
+          tod: { title: 'מגדל דוד — תערוכת אדריכלות אינטראקטיבית', sub: 'התקנה סוחפת · ממשק מונחה סיפור', body: 'הפכנו היסטוריה אדריכלית לחוויית דיגיטל ניתנת‑מגע שמכניסה מבקרים אל תוך הסיפור של העיר.' },
+          nli: { title: 'הספרייה הלאומית — תערוכה אינטראקטיבית', sub: 'טכנולוגיה תרבותית · מסכי מולטיטאץ׳', body: 'הובלנו פיתוח התקנות אינטראקטיביות לקמפוס החדש, שמחברות בין מורשת תרבותית לקהל באמצעות סיפור מודרני ומגע.' }
+        },
+        footer: { tag: 'סטודיו אינטראקטיבי עם משחקיות' }
+      }
+    };
+
+    function setLang(lang){
+      const root = document.documentElement;
+      root.lang = lang;
+      root.dir = (lang === 'he') ? 'rtl' : 'ltr';
+      // Update active state
+      document.querySelectorAll('.lang-switch button').forEach(btn=> btn.classList.toggle('active', btn.dataset.lang===lang));
+      // Swap text
+      const t = dict[lang];
+      if(!t) return;
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const path = el.getAttribute('data-i18n').split('.');
+        let val = t; path.forEach(k=> val = val && val[k]);
+        if(typeof val === 'string'){ el.textContent = val; }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+        const path = el.getAttribute('data-i18n-html').split('.');
+        let val = t; path.forEach(k=> val = val && val[k]);
+        if(typeof val === 'string'){ el.innerHTML = val; }
+      });
+      // Fallback: ensure award pill text updates inside titles (already handled via data-i18n-html titles)
+      localStorage.setItem('toast_lang', lang);
+    }
+
+    // Click handlers
+    document.querySelectorAll('.lang-switch button').forEach(btn=>{
+      btn.addEventListener('click', ()=> setLang(btn.dataset.lang));
+    });
+
+    // Init language
+    const init = localStorage.getItem('toast_lang') || (navigator.language||'en').slice(0,2);
+    setLang(['en','ja','he'].includes(init) ? init : 'en');
   </script>
 </body>
 </html>
