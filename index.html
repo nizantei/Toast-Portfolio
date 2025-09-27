@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Toast Games — Portfolio</title>
-  <meta name="description" content="Toast Games portfolio: games, interactive, and exhibitions." />
+  <meta name="description" content="Toast Games portfolio: games, interactive products, and exhibitions." />
   <style>
     :root{
       --bg: #1e223d;      /* background */
@@ -15,6 +15,7 @@
       --wash: #161a39;    /* header wash */
       --radius: 18px;     /* big radius */
       --maxw: 1100px;     /* page width */
+      --shadow: 0 18px 40px rgba(0,0,0,.28);
     }
 
     html{scroll-behavior:smooth;}
@@ -28,38 +29,59 @@
     .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);} 
     .brand-title{margin:0; font-weight:900; letter-spacing:.3px; font-size:clamp(16px,2.2vw,20px);} 
     .nav-cta{display:flex; gap:10px; align-items:center;} 
-    .btn{padding:10px 14px; border-radius:999px; border:1px solid rgba(230,214,183,.25); text-decoration:none;} 
+    .btn{padding:10px 14px; border-radius:999px; border:1px solid rgba(230,214,183,.25); text-decoration:none; transition: transform .15s ease, box-shadow .2s ease;} 
     .btn--accent{background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 6px 18px rgba(240,82,35,.35);} 
     .btn:hover{transform:translateY(-1px);} 
 
     /* Hero */
-    .hero{padding:56px 0 12px;} 
+    .hero{padding:72px 0 28px;} 
     .kicker{color:var(--muted); text-transform:uppercase; font-size:12px; letter-spacing:2px;} 
-    .title{font-size:clamp(28px,4.5vw,44px); margin:6px 0 8px; font-weight:900;} 
-    .lead{font-size:clamp(15px,2vw,18px); max-width:72ch;} 
+    .title{font-size:clamp(34px,6vw,64px); margin:10px 0 6px; font-weight:900; line-height:1.1;}
+    .title .accent{position:relative;}
+    .title .accent:after{content:""; position:absolute; left:0; right:0; bottom:-6px; height:8px; background:linear-gradient(90deg, var(--accent), transparent); border-radius:999px; opacity:.7;}
+    .lead{font-size:clamp(15px,2vw,18px); max-width:72ch; color:var(--text);} 
 
-    /* Cards */
-    .projects{padding:22px 0 64px;} 
-    .grid{display:grid; gap:22px;} 
-    .card{background:var(--card); border:1px solid rgba(230,214,183,.08); border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,.22);} 
-    .card-head{display:flex; align-items:center; justify-content:space-between; padding:18px 18px 8px;} 
-    .card h2{margin:0; font-size:clamp(18px,3vw,24px);} 
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; font-size:12px; border-radius:999px; background:var(--accent); color:#fff;} 
-    .card p{margin:10px 18px 16px;} 
+    /* Project layout: text + duo collage */
+    .projects{padding:10px 0 80px;} 
+    .project{display:grid; grid-template-columns: 1.05fr 1fr; gap:26px; align-items:center; background:var(--card); border:1px solid rgba(230,214,183,.08); border-radius:var(--radius); padding:24px; box-shadow: var(--shadow); overflow:hidden;}
+    .project + .project{margin-top:24px;}
+    .project.is-alt{grid-template-columns: 1fr 1.05fr;}
+    .info h2{margin:0; font-size:clamp(20px,3.5vw,28px);} 
+    .sub{margin:6px 0 12px; color:var(--muted);} 
+    .info p{margin:0;}
 
-    /* Image grid (uniform height) */
-    .gallery{display:grid; grid-template-columns:repeat(12,1fr); gap:12px; padding:0 14px 18px;} 
-    .shot{grid-column:span 6; border-radius:14px; overflow:hidden; border:1px solid rgba(230,214,183,.1); cursor:zoom-in;} 
-    .shot img{width:100%; height:320px; object-fit:cover; display:block;}
+    .duo{position:relative; height:420px;}
+    .tile{position:absolute; border-radius:16px; overflow:hidden; border:1px solid rgba(230,214,183,.1); box-shadow: var(--shadow); transform-origin: center; transition: transform .25s ease, box-shadow .25s ease; cursor:zoom-in;}
+    .tile img{display:block; width:100%; height:100%; object-fit:cover;}
+    .tile.a{inset:0 22% 18% 0;}   /* big one */
+    .tile.b{inset:38% 0 0 32%;}   /* smaller, offset */
+    .tile:hover{transform: translateY(-4px) scale(1.02);} 
 
-    @media (max-width: 860px){ .gallery{grid-template-columns:repeat(6,1fr);} .shot{grid-column:span 6;} }
-    @media (max-width: 520px){ .gallery{grid-template-columns:repeat(2,1fr);} .shot{grid-column:span 2;} .shot img{height:260px;} }
+    /* Awards pill */
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; font-size:12px; border-radius:999px; background:var(--accent); color:#fff; margin-left:8px;}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .project,.project.is-alt{grid-template-columns: 1fr;}
+      .duo{height:360px;}
+      .tile.a{inset:0 0 38% 0;} .tile.b{inset:56% 0 0 20%;}
+    }
+    @media (max-width: 520px){
+      .duo{height:320px;} .tile.a{inset:0 0 42% 0;} .tile.b{inset:60% 0 0 10%;}
+    }
 
     /* Lightbox */
     .lightbox{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.8); z-index:100;} 
     .lightbox.is-open{display:flex;} 
     .lightbox img{max-width:92vw; max-height:86vh; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,.6);} 
     .lightbox .close{position:absolute; top:18px; right:18px; background:var(--accent); color:#fff; border:none; border-radius:999px; padding:10px 12px; font-weight:700; cursor:pointer;} 
+
+    /* Reveal on scroll */
+    .reveal{opacity:0; transform: translateY(16px);}
+    .reveal.is-in{opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease;}
+    @media (prefers-reduced-motion: reduce){
+      .btn, .tile, .reveal{transition:none !important}
+    }
 
     /* Footer */
     footer{padding:40px 0 80px; color:var(--muted); text-align:center;} 
@@ -81,72 +103,76 @@
   </header>
 
   <main id="top" class="wrap">
-    <section class="hero" id="projects">
+    <section class="hero">
       <span class="kicker">Games • Interactive • Exhibitions</span>
-      <h2 class="title">Playful interactive experiences for brands & culture.</h2>
-      <p class="lead">Five concise case studies—from kids’ platforms for Nickelodeon to large‑scale cultural installations—designed and built with a focus on clarity, responsiveness, and touch‑friendly interaction.</p>
+      <h2 class="title">We are <span class="accent">Toast Games</span></h2>
+      <p class="lead">We design and build playful interactive products—games, apps, and museum installations. Small‑team focus, production‑level delivery.</p>
     </section>
 
-    <section class="projects grid" aria-label="Projects">
+    <section id="projects" class="projects" aria-label="Projects">
 
       <!-- 1: NickWatch -->
-      <article class="card" id="nickwatch">
-        <div class="card-head">
-          <h2>NickWatch — Smartwatch for Kids</h2>
-          <span class="pill">Red Dot Award</span>
+      <article class="project reveal" id="nickwatch">
+        <div class="info">
+          <h2>NickWatch — Smartwatch for Kids <span class="pill">Red Dot Award</span></h2>
+          <p class="sub">Wearable UX · Feature design · Children’s product</p>
+          <p>We designed and developed new interactive watch features for Nickelodeon’s kid‑focused wearable—bringing playful UX to everyday utility and earning recognition for product design.</p>
         </div>
-        <p>Designed and developed new interactive features for Nickelodeon’s kid‑focused wearable, combining playful UX with everyday utility and earning recognition for product design.</p>
-        <div class="gallery" aria-label="NickWatch gallery">
-          <figure class="shot"><img loading="lazy" src="nickwatch-1.jpg" alt="NickWatch feature screen" /></figure>
-          <figure class="shot"><img loading="lazy" src="nickwatch-2.jpg" alt="NickWatch on wrist" /></figure>
+        <div class="duo" aria-label="NickWatch gallery">
+          <figure class="tile a"><img loading="lazy" src="nickwatch-1.jpg" alt="NickWatch feature screen" /></figure>
+          <figure class="tile b"><img loading="lazy" src="nickwatch-2.jpg" alt="NickWatch on wrist" /></figure>
         </div>
       </article>
 
-      <!-- 2: NickAcademy -->
-      <article class="card" id="nickacademy">
-        <div class="card-head">
+      <!-- 2: NickAcademy (alt layout) -->
+      <article class="project is-alt reveal" id="nickacademy">
+        <div class="info">
           <h2>NickAcademy — Learning Through Play</h2>
+          <p class="sub">App build · Games · Avatar builder</p>
+          <p>We took the platform from concept to launch, delivering core interactive features—educational games and a customizable avatar builder—for a global kids’ audience.</p>
         </div>
-        <p>Built the app from concept to launch, delivering core interactive features including educational games and a customizable avatar builder for a global kids’ audience.</p>
-        <div class="gallery" aria-label="NickAcademy gallery">
-          <figure class="shot"><img loading="lazy" src="nickacademy-1.jpg" alt="NickAcademy game screen" /></figure>
-          <figure class="shot"><img loading="lazy" src="nickacademy-2.jpg" alt="NickAcademy avatar builder" /></figure>
+        <div class="duo" aria-label="NickAcademy gallery">
+          <figure class="tile a"><img loading="lazy" src="nickacademy-1.jpg" alt="NickAcademy game screen" /></figure>
+          <figure class="tile b"><img loading="lazy" src="nickacademy-2.jpg" alt="NickAcademy avatar builder" /></figure>
         </div>
       </article>
 
       <!-- 3: Israel Space Agency -->
-      <article class="card" id="isa">
-        <div class="card-head">
+      <article class="project reveal" id="isa">
+        <div class="info">
           <h2>Israel Space Agency — Educational Games</h2>
+          <p class="sub">Exhibition games · STEM learning</p>
+          <p>We developed two custom games for a public exhibition, translating space science into approachable, hands‑on play that sparks curiosity.</p>
         </div>
-        <p>Developed two custom games for a public exhibition, translating complex space science into approachable, hands‑on play that sparks curiosity.</p>
-        <div class="gallery" aria-label="Israel Space Agency gallery">
-          <figure class="shot"><img loading="lazy" src="space-1.jpg" alt="Space game mission screen" /></figure>
-          <figure class="shot"><img loading="lazy" src="space-2.jpg" alt="Educational space mini‑game" /></figure>
+        <div class="duo" aria-label="Israel Space Agency gallery">
+          <figure class="tile a"><img loading="lazy" src="space-1.jpg" alt="Space game mission screen" /></figure>
+          <figure class="tile b"><img loading="lazy" src="space-2.jpg" alt="Educational space mini‑game" /></figure>
         </div>
       </article>
 
       <!-- 4: Jerusalem Museum -->
-      <article class="card" id="jerusalem-museum">
-        <div class="card-head">
+      <article class="project is-alt reveal" id="jerusalem-museum">
+        <div class="info">
           <h2>Tower of David — Interactive Architecture</h2>
+          <p class="sub">Immersive installation · Story‑driven UI</p>
+          <p>We created an immersive digital installation at the Tower of David, turning architectural history into a tactile, story‑driven experience for visitors.</p>
         </div>
-        <p>Created an immersive digital installation at the Tower of David, turning architectural history into a tactile, story‑driven experience for visitors.</p>
-        <div class="gallery" aria-label="Jerusalem Museum gallery">
-          <figure class="shot"><img loading="lazy" src="tod-1.jpg" alt="Interactive architecture interface" /></figure>
-          <figure class="shot"><img loading="lazy" src="tod-2.jpg" alt="Visitors interacting with the exhibit" /></figure>
+        <div class="duo" aria-label="Jerusalem Museum gallery">
+          <figure class="tile a"><img loading="lazy" src="tod-1.jpg" alt="Interactive architecture interface" /></figure>
+          <figure class="tile b"><img loading="lazy" src="tod-2.jpg" alt="Visitors interacting with the exhibit" /></figure>
         </div>
       </article>
 
       <!-- 5: National Library of Israel -->
-      <article class="card" id="nli">
-        <div class="card-head">
+      <article class="project reveal" id="nli">
+        <div class="info">
           <h2>National Library of Israel — Interactive Exhibition</h2>
+          <p class="sub">Cultural tech · Multi‑touch displays</p>
+          <p>We led the development of interactive installations for the Library’s new campus, blending modern storytelling with touch‑friendly technology to connect audiences with cultural heritage.</p>
         </div>
-        <p>Led the development of interactive installations for the Library’s new campus, blending modern storytelling with touch‑friendly technology to connect audiences with cultural heritage.</p>
-        <div class="gallery" aria-label="National Library gallery">
-          <figure class="shot"><img loading="lazy" src="nli-1.jpg" alt="Interactive library timeline" /></figure>
-          <figure class="shot"><img loading="lazy" src="nli-2.jpg" alt="Touch display with artifacts" /></figure>
+        <div class="duo" aria-label="National Library gallery">
+          <figure class="tile a"><img loading="lazy" src="nli-1.jpg" alt="Interactive library timeline" /></figure>
+          <figure class="tile b"><img loading="lazy" src="nli-2.jpg" alt="Touch display with artifacts" /></figure>
         </div>
       </article>
 
@@ -182,13 +208,21 @@
     };
     window.Lightbox = Lightbox;
 
-    // Delegate clicks for any .shot > img
+    // Delegate clicks for any collage image
     document.addEventListener('click', (e)=>{
-      const img = e.target.closest('.shot img');
+      const img = e.target.closest('.tile img');
       if(img){ Lightbox.open(img.src, img.alt); }
       if(e.target.id === 'lightbox'){ Lightbox.close(); }
     });
     document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') Lightbox.close(); });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){ entry.target.classList.add('is-in'); io.unobserve(entry.target); }
+      })
+    }, {threshold: 0.12});
+    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
   </script>
 </body>
 </html>
